@@ -33,13 +33,21 @@ class DecipherService {
 		return data;
 	}
 
+  // TODO: remove magic numbers 
 	public decipherData(cipherMessage, key: number): string {
 		cipherMessage = cipherMessage.toLowerCase().replace(/['"]+/g, '');
 		
 		return cipherMessage.split("")
 		.map(item => item.charCodeAt() - 97)
 		.map(index => {
-			if (index >= 0 && index <= 25) return String.fromCharCode(((index - key) % 26) + 97)
+			if (index >= 0 && index <= 25) {
+        let shiftKey = index - key;
+        if (shiftKey < 0) {
+          shiftKey = 26 + shiftKey;
+          return String.fromCharCode(shiftKey + 97);
+        }
+        return String.fromCharCode((shiftKey % 26) + 97);
+      }
 			else return String.fromCharCode(index + 97)
 		}).join("");
 	}
