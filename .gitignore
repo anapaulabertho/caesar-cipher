@@ -5,8 +5,8 @@ package-lock.json
 coverage/
 dist/
 log/
-.env
 .idea/
 bin/
 npm-debug.log
 .vscode/
+answer.json

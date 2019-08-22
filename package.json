@@ -22,9 +22,13 @@
   "homepage": "https://github.com/anapaulabertho/caesar-cipher#readme",
   "dependencies": {
     "@types/express": "^4.17.0",
+    "@types/node": "^12.7.2",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "hashmap": "^2.3.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
+    "sha1": "^1.1.1"
   }
 }
