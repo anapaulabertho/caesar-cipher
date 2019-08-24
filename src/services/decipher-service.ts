@@ -2,14 +2,14 @@ import * as fileService from "fs";
 import * as sha1 from "sha1";
 import { IData } from "../interfaces/i-data";
 import { IResponse } from "../interfaces/i-response";
-import { CodenationClient } from "../clients/codenationClient";
+import { CodenationClient } from "../clients/codenation-client";
 import { response } from "express";
 
 class DecipherService {
 
 	public saveData(data: string): void {
     try {
-      fileService.writeFileSync('answer.json', data);
+      fileService.writeFileSync('answer.json', data, 'utf-8');
       console.info("Data saved on file");
     } catch (err) {
       console.error(`Error trying to save file: ${err}`);
@@ -41,14 +41,15 @@ class DecipherService {
 		.map(item => item.charCodeAt() - 97)
 		.map(index => {
 			if (index >= 0 && index <= 25) {
-        let shiftKey = index - key;
+        let shiftKey = index - (key%26); // use the mod to adjust the key to a range between 0 and 25
         if (shiftKey < 0) {
           shiftKey = 26 + shiftKey;
           return String.fromCharCode(shiftKey + 97);
         }
         return String.fromCharCode((shiftKey % 26) + 97);
+      } else {
+        return String.fromCharCode(index + 97);
       }
-			else return String.fromCharCode(index + 97)
 		}).join("");
 	}
 
@@ -77,12 +78,13 @@ class DecipherService {
       // Update the answer.json file with the new content
       dataFromFile = this.updateData(dataFromFile);
 
+      // Post the response on Codenation api
+      let submitResponse = await codenationClient.submit();
+
       let response: IResponse = {
         data: dataFromFile,
-        submitResponse: "Response from submit post"
+        submitResponse
       };
-      // Post the response on Codenation api
-      // response.submitResponse = await codenationClient.submit();
 
       return response;
     } catch (err) {

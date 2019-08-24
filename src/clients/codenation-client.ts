@@ -33,12 +33,12 @@ export class CodenationClient {
         token: ""
       },
       formData: {
-        file: {
-            value: fs.createReadStream('answer.json'),
-            options: {
-                filename: 'answer.json',
-                contentType: 'application/json'
-            }
+        answer: {
+          value: fs.createReadStream('./answer.json'),
+          options: {
+            filename: 'answer.json',
+            contentType: null
+          }
         }
       },
       json: true,
