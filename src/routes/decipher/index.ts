@@ -7,7 +7,7 @@ router.get("/", async (req, res, next) => {
   console.info("Received a request to decipher");
   try {
     const decipherService = new DecipherService();
-    let response = await decipherService.execute();
+    let response = await decipherService.execute(req.query.token);
     return res.status(200).send({
       response
     });

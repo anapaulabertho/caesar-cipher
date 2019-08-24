@@ -3,7 +3,6 @@ import * as sha1 from "sha1";
 import { IData } from "../interfaces/i-data";
 import { IResponse } from "../interfaces/i-response";
 import { CodenationClient } from "../clients/codenation-client";
-import { response } from "express";
 
 class DecipherService {
 
@@ -53,11 +52,11 @@ class DecipherService {
 		}).join("");
 	}
 
-	public async execute(): Promise<IResponse> {
+	public async execute(token: string): Promise<IResponse> {
     try {
       // Get information from Codenation api
       const codenationClient = new CodenationClient();
-      let data: IData = await codenationClient.getInformation();
+      let data: IData = await codenationClient.getInformation(token);
       console.log("Data: ", data);
 
       // Save data on answer.json file
@@ -79,7 +78,7 @@ class DecipherService {
       dataFromFile = this.updateData(dataFromFile);
 
       // Post the response on Codenation api
-      let submitResponse = await codenationClient.submit();
+      let submitResponse = await codenationClient.submit(token);
 
       let response: IResponse = {
         data: dataFromFile,

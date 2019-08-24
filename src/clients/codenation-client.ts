@@ -3,14 +3,14 @@ import * as fs from "fs";
 import { IData } from "../interfaces/i-data";
 
 export class CodenationClient {
-  public getInformation(): Promise<IData> {
+  public getInformation(token: string): Promise<IData> {
     const baseUrl = "https://api.codenation.dev";
     return request({
       method: "GET",
       baseUrl,
       uri: "/v1/challenge/dev-ps/generate-data",
       qs: {
-        token: ""
+        token
       },
       json: true,
       resolveWithFullResponse: true,
@@ -23,14 +23,14 @@ export class CodenationClient {
       });
   }
 
-  public submit(): Promise<void> {
+  public submit(token: string): Promise<void> {
     const baseUrl = "https://api.codenation.dev";
     return request({
       method: "POST",
       baseUrl,
       uri: "/v1/challenge/dev-ps/submit-solution",
       qs: {
-        token: ""
+        token
       },
       formData: {
         answer: {
