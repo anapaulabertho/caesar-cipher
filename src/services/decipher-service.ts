@@ -6,7 +6,7 @@ import { CodenationClient } from "../clients/codenation-client";
 
 class DecipherService {
 
-	public saveData(data: string): void {
+  public saveData(data: string): void {
     try {
       fileService.writeFileSync('answer.json', data, 'utf-8');
       console.info("Data saved on file");
@@ -14,9 +14,9 @@ class DecipherService {
       console.error(`Error trying to save file: ${err}`);
       throw err;
     }
-	}
+  }
 
-	public readData(): string {
+  public readData(): string {
     try {
       let data = fileService.readFileSync('answer.json', 'utf8');
       console.info("Data read from file");
@@ -26,33 +26,33 @@ class DecipherService {
       throw err;
     }
   }
-  
+
   public updateData(data: IData): IData {
-		this.saveData(JSON.stringify(data));
-		return data;
-	}
+    this.saveData(JSON.stringify(data));
+    return data;
+  }
 
   // TODO: remove magic numbers 
-	public decipherData(cipherMessage, key: number): string {
-		cipherMessage = cipherMessage.toLowerCase().replace(/['"]+/g, '');
-		
-		return cipherMessage.split("")
-		.map(item => item.charCodeAt() - 97)
-		.map(index => {
-			if (index >= 0 && index <= 25) {
-        let shiftKey = index - (key%26); // use the mod to adjust the key to a range between 0 and 25
-        if (shiftKey < 0) {
-          shiftKey = 26 + shiftKey;
-          return String.fromCharCode(shiftKey + 97);
-        }
-        return String.fromCharCode((shiftKey % 26) + 97);
-      } else {
-        return String.fromCharCode(index + 97);
-      }
-		}).join("");
-	}
+  public decipherData(cipherMessage, key: number): string {
+    cipherMessage = cipherMessage.toLowerCase().replace(/['"]+/g, '');
 
-	public async execute(token: string): Promise<IResponse> {
+    return cipherMessage.split("")
+      .map(item => item.charCodeAt() - 97)
+      .map(index => {
+        if (index >= 0 && index <= 25) {
+          let shiftKey = index - (key % 26); // use the mod to adjust the key to a range between 0 and 25
+          if (shiftKey < 0) {
+            shiftKey = 26 + shiftKey;
+            return String.fromCharCode(shiftKey + 97);
+          }
+          return String.fromCharCode((shiftKey % 26) + 97);
+        } else {
+          return String.fromCharCode(index + 97);
+        }
+      }).join("");
+  }
+
+  public async execute(token: string): Promise<IResponse> {
     try {
       // Get information from Codenation api
       const codenationClient = new CodenationClient();
@@ -67,7 +67,7 @@ class DecipherService {
 
       // Read the file to get the information
       let dataFromFile: IData = JSON.parse(this.readData());
-      
+
       // Update the decifrado field with the response 
       dataFromFile.decifrado = decipheredMessage;
 
@@ -90,7 +90,7 @@ class DecipherService {
       console.error(`Error: ${err}`);
       throw err;
     }
-	} 
+  }
 
 }
 
